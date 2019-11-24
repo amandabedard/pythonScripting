@@ -1,4 +1,4 @@
-# pythonScripting repo
+# pythonScripting
 Home to miscellaneous python scripts
 
 ***tcp-server***: A simple client and server script
